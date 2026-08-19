@@ -147,11 +147,7 @@ function Conteudo({ usuario }: { usuario: Usuario }) {
                     <td>{u.perfil}</td>
                     <td>{u.lojaVinculada ?? "Todas"}</td>
                     <td>
-                      <button
-                        onClick={() =>
-                          handleEnviarResetEmail((u as unknown as { email?: string }).email ?? "")
-                        }
-                      >
+                      <button onClick={() => handleEnviarResetEmail(u.email ?? "")}>
                         Enviar e-mail de redefinição
                       </button>
                     </td>
@@ -161,9 +157,10 @@ function Conteudo({ usuario }: { usuario: Usuario }) {
             </table>
             {mensagemAdmin && <p>{mensagemAdmin}</p>}
             <p style={{ fontSize: 12, color: "#666" }}>
-              Nota: o documento do usuário em <code>usuarios/{"{uid}"}</code> hoje só guarda{" "}
-              <code>nome</code> e <code>perfil</code> — para o envio de e-mail funcionar, adicione
-              também um campo <code>email</code> a cada documento.
+              O botão acima só funciona para usuários que têm o campo <code>email</code> no
+              documento (coleção <code>usuarios</code>) — quem foi criado pelo script{" "}
+              <code>criar-usuarios.js</code> já tem; se criou manualmente pelo Firestore antes
+              disso, pode faltar adicionar esse campo.
             </p>
           </>
         )}

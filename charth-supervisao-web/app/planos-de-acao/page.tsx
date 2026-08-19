@@ -12,6 +12,7 @@ import {
   ACTION_PLAN_STATUS_COLOR,
   ACTION_PLAN_PRIORITY_COLOR,
 } from "../../lib/formConfig";
+import { formatarDataBR, parseDataLocal, hojeLocal } from "../../lib/dateUtils";
 import type { PlanoAcao, Usuario } from "../../lib/types";
 
 function Badge({ label, color }: { label: string; color: string }) {
@@ -35,7 +36,7 @@ function Badge({ label, color }: { label: string; color: string }) {
 
 function estaVencido(plano: PlanoAcao): boolean {
   if (plano.status === "Concluído" || plano.status === "Cancelado") return false;
-  return new Date(plano.prazo) < new Date(new Date().toDateString());
+  return parseDataLocal(plano.prazo) < hojeLocal();
 }
 
 function CartaoPlano({
@@ -82,7 +83,7 @@ function CartaoPlano({
       <p>
         <strong>Nota:</strong> {plano.nota.toFixed(2)} · <strong>Responsável:</strong>{" "}
         {plano.responsavel || "Não definido"} · <strong>Prazo:</strong>{" "}
-        {new Date(plano.prazo).toLocaleDateString("pt-BR")}
+        {formatarDataBR(plano.prazo)}
       </p>
 
       <details style={{ marginBottom: "0.5rem" }}>

@@ -5,6 +5,7 @@ import ProtectedRoute from "../../components/ProtectedRoute";
 import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
 import { listarAvaliacoes, excluirAvaliacao } from "../../lib/firestore-queries";
+import { formatarDataBR } from "../../lib/dateUtils";
 import { computeSectionScores, computeBonus, scoreBadgeDashboard } from "../../lib/calculations";
 import { FORM_SECTIONS, OBSERVATION_LABELS, STRATEGIC_LABELS } from "../../lib/formConfig";
 import type { Avaliacao, Usuario } from "../../lib/types";
@@ -35,7 +36,7 @@ function DetalheAvaliacao({ avaliacao }: { avaliacao: Avaliacao }) {
   return (
     <div style={{ marginTop: "1.5rem", border: "1px solid #ddd", borderRadius: 8, padding: "1rem" }}>
       <h2>
-        {avaliacao.lojaNome} — {new Date(avaliacao.data).toLocaleDateString("pt-BR")}
+        {avaliacao.lojaNome} — {formatarDataBR(avaliacao.data)}
       </h2>
       <p>
         <strong>Gerente:</strong> {avaliacao.gerente} · <strong>Supervisora:</strong>{" "}
@@ -211,7 +212,7 @@ function ConteudoHistorico({ usuario }: { usuario: Usuario }) {
           <tbody>
             {filtradas.map((a) => (
               <tr key={a.id}>
-                <td>{new Date(a.data).toLocaleDateString("pt-BR")}</td>
+                <td>{formatarDataBR(a.data)}</td>
                 <td>{a.lojaNome}</td>
                 <td>{a.supervisoraNome}</td>
                 <td>{a.gerente}</td>

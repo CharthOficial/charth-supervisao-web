@@ -23,6 +23,7 @@ import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
 import { listarAvaliacoes } from "../../lib/firestore-queries";
 import { statusFromWeighted, computeSectionScores } from "../../lib/calculations";
+import { formatarDataBR } from "../../lib/dateUtils";
 import { STATUS_COLOR_MAP } from "../../lib/formConfig";
 import {
   ultimaPorLoja,
@@ -207,7 +208,7 @@ function ConteudoDashboard({ usuario }: { usuario: Usuario }) {
                   .map((a) => (
                     <tr key={a.id}>
                       <td>{a.lojaNome}</td>
-                      <td>{new Date(a.data).toLocaleDateString("pt-BR")}</td>
+                      <td>{formatarDataBR(a.data)}</td>
                       <td>{a.gerente}</td>
                       <td>{a.notaFinalPonderada.toFixed(2)}</td>
                       <td>{statusFromWeighted(a.notaFinalPonderada)}</td>
@@ -251,7 +252,7 @@ function ConteudoDashboard({ usuario }: { usuario: Usuario }) {
                       <td>{r.loja}</td>
                       <td>{r.mediaGeral.toFixed(2)}</td>
                       <td>{r.avaliacoes}</td>
-                      <td>{new Date(r.ultimaAvaliacao).toLocaleDateString("pt-BR")}</td>
+                      <td>{formatarDataBR(r.ultimaAvaliacao)}</td>
                       <td>{r.statusMedio}</td>
                     </tr>
                   ))}
@@ -332,9 +333,9 @@ function ConteudoDashboard({ usuario }: { usuario: Usuario }) {
             <h2>Evolução da média ponderada</h2>
             <LineChart width={800} height={420} data={evolucaoLinha}>
               <CartesianGrid />
-              <XAxis dataKey="data" tickFormatter={(d) => new Date(d).toLocaleDateString("pt-BR")} />
+              <XAxis dataKey="data" tickFormatter={formatarDataBR} />
               <YAxis domain={[0, 10]} />
-              <Tooltip labelFormatter={(d) => new Date(d).toLocaleDateString("pt-BR")} />
+              <Tooltip labelFormatter={(d) => formatarDataBR(d as string)} />
               <Legend />
               <ReferenceLine y={9} stroke="#C9A0A0" strokeDasharray="4 4" label="Excelência CHARTH" />
               <ReferenceLine y={8} stroke="#6D6E71" strokeDasharray="4 4" label="Loja Forte" />

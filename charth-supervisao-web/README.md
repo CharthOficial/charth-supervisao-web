@@ -94,15 +94,31 @@ foram revisados. O que falta é trabalho de infraestrutura/plataforma
    seção. Isso replica o que o app original já fazia — ele também salva
    base64 direto no Postgres quando usa Supabase.
 
+✅ **Campo `email` e criação de usuários por loja resolvidos** — o
+   pacote `charth-migracao-supabase` (separado deste, já entregue) tem
+   `criar-usuarios.js`, que cria de uma vez os logins de gestora de
+   cada loja + supervisora, já com `email` salvo no documento
+   (`lib/types.ts` atualizado; `Usuario.email` agora existe de verdade,
+   sem gambiarra de cast).
+✅ **Login por usuário resolvido** — a tela de login (`app/page.tsx`)
+   agora aceita só o usuário (ex: `admin`), completando
+   `@charth.com.br` por baixo dos panos antes de chamar o Firebase Auth.
+   A pessoa nunca vê nem digita o domínio — a experiência fica igual à
+   do app original, mesmo o Firebase exigindo formato de e-mail
+   internamente.
+✅ **Migração do Supabase concluída** — o projeto certo foi encontrado
+   (banco de produção real, na conta do Guilherme), com 3 avaliações e
+   68 planos de ação migrados com sucesso para o Firestore. Bug de
+   fuso horário nas datas (encontrado durante o teste da migração)
+   corrigido em `lib/dateUtils.ts`.
+
 ## O que falta fazer (lista de trabalho)
 
-1. Migrar os dados existentes do Supabase/SQLite.
-2. Adicionar campo `email` aos documentos de `usuarios`.
-3. Login por username vs. e-mail — definir convenção.
-4. Exportação CSV (dashboard e planos de ação).
-5. Considerar Cloud Functions (Firebase Admin SDK) se precisar de reset
+1. Exportação CSV (dashboard e planos de ação) — hoje só JSON em Configurações.
+2. Considerar Cloud Functions (Firebase Admin SDK) se precisar de reset
    de senha direto por admin, como no app original.
-6. Deploy no Vercel.
+3. Deploy no Vercel — ✅ já feito, em produção em
+   `charth-supervisao-web-gules.vercel.app`.
 
 ## Rodando localmente
 

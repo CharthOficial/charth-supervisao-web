@@ -5,6 +5,7 @@ export interface Usuario {
   nome: string;
   perfil: Perfil;
   lojaVinculada?: string;
+  email?: string; // usado pelo botão de redefinição de senha em Configurações
 }
 
 export interface Loja {

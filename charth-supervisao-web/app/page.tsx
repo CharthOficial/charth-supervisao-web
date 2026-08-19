@@ -5,8 +5,19 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "../lib/firebase";
 
+// Domínio fixo usado para completar o "e-mail" que o Firebase Auth
+// exige internamente — a pessoa só digita o usuário (ex: "admin"),
+// igual ao app original. Se ela digitar o e-mail completo, também
+// funciona (não duplica o domínio).
+const DOMINIO_LOGIN = "charth.com.br";
+
+function paraEmailDeLogin(usuarioDigitado: string): string {
+  const valor = usuarioDigitado.trim();
+  return valor.includes("@") ? valor : `${valor}@${DOMINIO_LOGIN}`;
+}
+
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState<string | null>(null);
   const router = useRouter();
@@ -15,10 +26,10 @@ export default function LoginPage() {
     e.preventDefault();
     setErro(null);
     try {
-      await signInWithEmailAndPassword(auth, email, senha);
+      await signInWithEmailAndPassword(auth, paraEmailDeLogin(usuario), senha);
       router.push("/dashboard");
     } catch {
-      setErro("E-mail ou senha inválidos.");
+      setErro("Usuário ou senha inválidos.");
     }
   }
 
@@ -35,12 +46,15 @@ export default function LoginPage() {
         <div className="brand-title">CHARTH</div>
         <div className="brand-subtitle">Supervisão de Varejo</div>
 
-        <label>E-mail</label>
+        <label>Usuário</label>
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          value={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
+          placeholder="ex: admin"
           required
+          autoCapitalize="none"
+          autoCorrect="off"
           style={{ display: "block", width: "100%", marginBottom: "1rem" }}
         />
 
