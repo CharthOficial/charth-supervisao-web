@@ -48,7 +48,24 @@ export default function NovaAvaliacaoPage() {
   const [faltaGraveDisciplinar, setFaltaGraveDisciplinar] = useState(false);
 
   const [salvando, setSalvando] = useState(false);
+  const [salvo, setSalvo] = useState(false);
   const [mensagem, setMensagem] = useState<string | null>(null);
+
+  function iniciarNovaAvaliacao() {
+    setData(new Date().toISOString().slice(0, 10));
+    setSupervisora("");
+    setGerente("");
+    setLoja("");
+    setSecoes(secoesVazias());
+    setMaiorRisco("");
+    setMaiorOportunidade("");
+    setVirarOuro("");
+    setDnaCharth("Totalmente");
+    setFaltaGraveDisciplinar(false);
+    setSalvo(false);
+    setMensagem(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function atualizarResposta(secaoNome: string, perguntaKey: string, nota: number) {
     setSecoes((prev) => ({
@@ -148,6 +165,7 @@ export default function NovaAvaliacaoPage() {
     try {
       await salvarAvaliacao({ ...avaliacaoBase, notaFinalPonderada, status });
       setMensagem(`Avaliação salva. Média ponderada: ${notaFinalPonderada.toFixed(2)}`);
+      setSalvo(true);
     } finally {
       setSalvando(false);
     }
@@ -212,11 +230,19 @@ export default function NovaAvaliacaoPage() {
               onChangeFaltaGraveDisciplinar={setFaltaGraveDisciplinar}
             />
 
-            {mensagem && <p style={{ fontWeight: 600 }}>{mensagem}</p>}
+            {mensagem && (
+              <p style={{ fontWeight: 600, background: salvo ? "#e7f6ec" : "#fdecea", padding: "0.75rem", borderRadius: 6 }}>
+                {mensagem}
+              </p>
+            )}
 
-            <button disabled={salvando} onClick={() => handleSalvar(usuario.uid)}>
-              {salvando ? "Salvando..." : "Salvar avaliação"}
-            </button>
+            {salvo ? (
+              <button onClick={iniciarNovaAvaliacao}>Nova avaliação</button>
+            ) : (
+              <button disabled={salvando} onClick={() => handleSalvar(usuario.uid)}>
+                {salvando ? "Salvando..." : "Salvar avaliação"}
+              </button>
+            )}
           </main>
         </div>
       )}
