@@ -1,0 +1,274 @@
+/* Paleta e identidade visual real, portada de src/ui.py (apply_brand_css).
+   A fonte 'SIMPLO' é uma fonte licenciada local do Charth, não
+   disponível via web — os fallbacks abaixo replicam a mesma cadeia do
+   original. */
+:root {
+  --charth-black: #1f1f1f;
+  --charth-ink: #111111;
+  --charth-gray: #6d6e71;
+  --charth-silver: #b8b8b8;
+  --charth-silver-soft: #e7e2df;
+  --charth-silver-line: #d8d2cf;
+  --charth-rose: #c9a0a0;
+  --charth-rose-deep: #b98585;
+  --charth-rose-soft: #f3e8e6;
+  --charth-cream: #f8f6f3;
+  --charth-card: #fffdfc;
+  --charth-gold: #c8a24a;
+  --charth-gold-soft: #e7cfa2;
+  --charth-bronze: #a66a3f;
+  --charth-critical: #7f3438;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "SIMPLO", "Simplo", "Avenir Next", "Montserrat", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  color: var(--charth-black);
+  background: radial-gradient(
+    circle at top left,
+    rgba(201, 160, 160, 0.08) 0%,
+    rgba(248, 246, 243, 1) 35%,
+    rgba(244, 239, 236, 1) 100%
+  );
+}
+
+h1,
+h2,
+h3 {
+  color: var(--charth-black);
+  letter-spacing: 0.01em;
+  font-weight: 650;
+}
+
+.layout-autenticado {
+  display: flex;
+  min-height: 100vh;
+}
+
+.conteudo {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Marca — usada no login e no topo de cada página (header() no original) */
+.brand-title {
+  color: var(--charth-black);
+  font-size: 40px;
+  font-weight: 300;
+  letter-spacing: 0.52em;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.brand-subtitle {
+  color: var(--charth-gray);
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+/* Cards genéricos (section-card / metric-card / login-card no original) */
+.charth-card {
+  background: rgba(255, 253, 252, 0.96);
+  border: 1px solid rgba(201, 160, 160, 0.24);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 45px rgba(31, 31, 31, 0.045);
+  margin-bottom: 18px;
+}
+
+.metric-card {
+  background: rgba(255, 253, 252, 0.96);
+  border: 1px solid rgba(201, 160, 160, 0.24);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 18px 45px rgba(31, 31, 31, 0.045);
+  flex: 1;
+}
+
+.metric-card-kicker {
+  color: #8a7775;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  margin-bottom: 4px;
+  font-weight: 800;
+}
+
+.metric-card-value {
+  font-size: 30px;
+  color: var(--charth-black);
+  font-weight: 650;
+}
+
+.small-muted {
+  color: var(--charth-gray);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Hero do formulário de avaliação (charth-form-hero no original) */
+.charth-form-hero {
+  background: linear-gradient(135deg, #fffdfc 0%, #f3e8e6 100%);
+  border: 1px solid rgba(201, 160, 160, 0.28);
+  border-radius: 28px;
+  padding: 26px 28px;
+  margin: 12px 0 22px 0;
+  box-shadow: 0 18px 42px rgba(31, 31, 31, 0.045);
+}
+
+.charth-form-hero-title {
+  color: var(--charth-black);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.charth-form-hero-subtitle {
+  color: var(--charth-gray);
+  font-size: 14px;
+  line-height: 1.55;
+  margin-top: 6px;
+}
+
+/* Cabeçalho de cada uma das 8 seções do formulário */
+.charth-section-header {
+  background: linear-gradient(135deg, #fffdfc 0%, #f3e8e6 100%);
+  border-top: 1px solid rgba(201, 160, 160, 0.32);
+  border-bottom: 1px solid rgba(201, 160, 160, 0.18);
+  padding: 16px 4px 14px 4px;
+  margin-top: 18px;
+  margin-bottom: 14px;
+}
+
+.charth-section-number {
+  color: var(--charth-rose-deep);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 4px;
+}
+
+.charth-section-title {
+  color: var(--charth-black);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.charth-field-hint {
+  color: var(--charth-gray);
+  font-size: 12px;
+  margin-top: -4px;
+  margin-bottom: 12px;
+}
+
+/* Pill de status — status_pill/score_badge no original */
+.status-pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  font-weight: 750;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* Botões no padrão CHARTH (preto, vira rose no hover) */
+button {
+  border-radius: 999px;
+  border: 1px solid var(--charth-black);
+  background: var(--charth-black);
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--charth-rose);
+  background: var(--charth-rose);
+  color: var(--charth-black);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:not([type="range"]),
+textarea,
+select {
+  color: var(--charth-black);
+  background: #fffdfc;
+  border-radius: 14px;
+  border: 1px solid var(--charth-silver-line);
+  padding: 6px 10px;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+  border: 1px solid var(--charth-rose);
+  box-shadow: 0 6px 18px rgba(31, 31, 31, 0.035);
+  outline: none;
+}
+
+/* Sidebar — fundo separado do conteúdo, igual ao original */
+nav.charth-sidebar {
+  background: #f2ece9;
+}
+
+nav.charth-sidebar button {
+  background: var(--charth-black);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .brand-title {
+    font-size: 28px;
+    letter-spacing: 0.36em;
+    text-align: left;
+  }
+  .brand-subtitle {
+    text-align: left;
+    letter-spacing: 0.14em;
+    font-size: 10px;
+  }
+  h1 {
+    font-size: 1.75rem !important;
+  }
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  .charth-form-hero {
+    padding: 20px 18px;
+    border-radius: 22px;
+  }
+  .charth-section-title {
+    font-size: 19px;
+  }
+  .charth-card,
+  .metric-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+}

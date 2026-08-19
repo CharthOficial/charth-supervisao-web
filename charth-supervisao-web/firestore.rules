@@ -1,0 +1,47 @@
+rules_version = '2';
+
+// Regras equivalentes às permissões do app original:
+// - admin e supervisora: acesso completo
+// - gestora: leitura de dashboard/histórico/planos; sem criar avaliação
+//
+// TODO: revisar com atenção antes de ir para produção — isto é um ponto
+// de partida, não uma auditoria de segurança completa.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function perfilDoUsuario() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.perfil;
+    }
+
+    function estaLogado() {
+      return request.auth != null;
+    }
+
+    match /usuarios/{uid} {
+      allow read: if estaLogado();
+      allow write: if false; // gerenciar perfis só via Firebase Admin SDK
+    }
+
+    match /lojas/{lojaId} {
+      allow read: if estaLogado();
+      allow write: if estaLogado() && perfilDoUsuario() in ['admin'];
+    }
+
+    match /avaliacoes/{avaliacaoId} {
+      allow read: if estaLogado();
+      allow create: if estaLogado() && perfilDoUsuario() in ['admin', 'supervisora'];
+      allow update, delete: if estaLogado() && perfilDoUsuario() in ['admin'];
+    }
+
+    match /planosDeAcao/{planoId} {
+      allow read: if estaLogado();
+      allow write: if estaLogado() && perfilDoUsuario() in ['admin', 'supervisora'];
+    }
+
+    match /bonificacoes/{bonificacaoId} {
+      allow read: if estaLogado();
+      allow write: if estaLogado() && perfilDoUsuario() in ['admin'];
+    }
+  }
+}
