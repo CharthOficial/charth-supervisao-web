@@ -11,7 +11,11 @@ import { listarUsuarios, listarAvaliacoes } from "../../lib/firestore-queries";
 import type { Usuario } from "../../lib/types";
 
 export default function ConfiguracoesPage() {
-  return <ProtectedRoute perfisPermitidos={["admin", "supervisora"]}>{(usuario) => <Conteudo usuario={usuario} />}</ProtectedRoute>;
+  // Sem perfisPermitidos: qualquer perfil logado acessa. A troca da
+  // própria senha deve estar disponível pra todo mundo (inclusive
+  // gestora); as seções admin-only continuam gated por podeAdmin()
+  // dentro do componente.
+  return <ProtectedRoute>{(usuario) => <Conteudo usuario={usuario} />}</ProtectedRoute>;
 }
 
 function Conteudo({ usuario }: { usuario: Usuario }) {

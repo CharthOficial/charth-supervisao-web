@@ -1,0 +1,14 @@
+{
+  "name": "charth-migracao-supabase",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Migra dados de evaluations/action_plans do Supabase (CSV exportado) para o Firestore.",
+  "scripts": {
+    "importar": "node importar.js",
+    "importar-fotos": "node importar-fotos.js"
+  },
+  "dependencies": {
+    "csv-parse": "^5.5.6",
+    "firebase-admin": "^12.6.0"
+  }
+}

@@ -28,9 +28,7 @@ export default function Sidebar({ usuario }: { usuario: Usuario }) {
       )}
       <Link href="/historico" className="nav-pill">Histórico</Link>
       <Link href="/planos-de-acao" className="nav-pill">Planos de ação</Link>
-      {podeCriarAvaliacao(usuario.perfil) && (
-        <Link href="/configuracoes" className="nav-pill">Configurações</Link>
-      )}
+      <Link href="/configuracoes" className="nav-pill">Configurações</Link>
 
       {/* Bonificação NÃO existe como página no app original (confirmado
           em app.py: as 5 páginas reais são Dashboard/Nova Avaliação/
