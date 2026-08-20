@@ -237,6 +237,32 @@ nav.charth-sidebar {
   background: #f2ece9;
 }
 
+/* Pill de navegação — balão arredondado usado no menu lateral,
+   fundo rosé e texto branco. */
+.nav-pill {
+  display: inline-block;
+  background: #c4a4a7;
+  color: #ffffff !important;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.nav-pill:hover {
+  opacity: 0.85;
+}
+
+.nav-pill-extra {
+  background: #e0d3d4;
+  color: #6d6e71 !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 nav.charth-sidebar button {
   background: var(--charth-black);
   color: #ffffff;
