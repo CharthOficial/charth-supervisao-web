@@ -171,9 +171,9 @@ function Conteudo({ usuario }: { usuario: Usuario }) {
 
         <h2 style={{ marginTop: "2rem" }}>Backup / Exportação</h2>
         <p style={{ color: "#666" }}>
-          O app original faz backup local só para SQLite (copia o arquivo); para Supabase,
-          recomenda usar o backup nativo do Supabase ou exportar CSV. Aqui, sem um arquivo único
-          de banco, o equivalente disponível é exportar as avaliações que você tem acesso em JSON:
+          O banco de dados hoje é o Firestore (Firebase) — sem um arquivo único pra copiar como
+          num banco tradicional. A forma de backup disponível é exportar as avaliações que você
+          tem acesso em JSON:
         </p>
         <button disabled={exportando} onClick={handleExportarAvaliacoes}>
           {exportando ? "Exportando..." : "Exportar minhas avaliações (JSON)"}
