@@ -28,8 +28,21 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, paraEmailDeLogin(usuario), senha);
       router.push("/dashboard");
-    } catch {
-      setErro("Usuário ou senha inválidos.");
+    } catch (erroLogin) {
+      const codigo = (erroLogin as { code?: string })?.code ?? "desconhecido";
+      const credenciaisInvalidas = [
+        "auth/invalid-credential",
+        "auth/wrong-password",
+        "auth/user-not-found",
+        "auth/invalid-email",
+      ];
+      if (credenciaisInvalidas.includes(codigo)) {
+        setErro("Usuário ou senha inválidos.");
+      } else if (codigo === "auth/too-many-requests") {
+        setErro("Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo.");
+      } else {
+        setErro(`Não foi possível entrar (${codigo}).`);
+      }
     }
   }
 
