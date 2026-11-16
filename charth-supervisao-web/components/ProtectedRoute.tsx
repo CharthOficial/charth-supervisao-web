@@ -22,7 +22,7 @@ export default function ProtectedRoute({ children, perfisPermitidos }: Props) {
     return onAuthStateChanged(auth, async (firebaseUser) => {
       if (!firebaseUser) {
         setUsuario(null);
-        router.push("/");
+        router.replace("/entrar");
         return;
       }
       const perfil = await buscarPerfilUsuario(firebaseUser.uid);
@@ -35,7 +35,7 @@ export default function ProtectedRoute({ children, perfisPermitidos }: Props) {
   }, [router, perfisPermitidos]);
 
   if (usuario === undefined) return <p>Carregando...</p>;
-  if (usuario === null) return null; // redirecionando para login
+  if (usuario === null) return null; // redirecionando para o acesso pelo Hub
 
   return <>{children(usuario)}</>;
 }

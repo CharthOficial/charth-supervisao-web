@@ -127,3 +127,44 @@ npm install
 cp .env.local.example .env.local   # preencher com as chaves do Firebase
 npm run dev
 ```
+
+---
+
+## Acesso pelo Hub (login único, substitui o login por usuário e senha)
+
+O app **não tem mais tela de login**. A pessoa entra clicando no sistema dentro do Hub.
+
+**Fluxo**
+1. No Hub, a pessoa clica em "Supervisão Varejo". O Hub emite um token (JWT HS256, 60 s) e o envia por
+   **POST** (campo `hub_token`) para `…/hub/sso`.
+2. `/hub/sso` confere o token **localmente**, com as mesmas regras de `hub_sso_verify()` do Hub (`hub_sso.php`):
+   só HS256; `iss` = `charth-hub`; `exp` e `iat` obrigatórios; `iat` até 30 s no futuro; `pid` = id deste
+   sistema no Hub; `login` obrigatório. O servidor do app **não precisa alcançar o Hub**.
+3. Procura a pessoa no Firebase Auth pelo e-mail do token (ou `login@charth.com.br`, quando o "login" do
+   Hub não é um e-mail) e exige o documento `usuarios/{uid}`. Perfil e loja vêm de lá. Sem cadastro: "Você
+   não tem acesso a este app".
+4. Gera um token de sessão do Firebase e o entrega por cookie de uso único (60 s), lido por
+   `POST /api/auth/hub/sessao`. O token nunca vai para a URL. `/entrar` entra com `signInWithCustomToken`.
+5. Sem sessão, `/entrar` manda para o Hub. "Sair" encerra a sessão do app e volta para o Hub.
+
+**Cadastro no Hub** (Administração → Sistemas → novo): título "Supervisão Varejo", URL
+`https://charth-supervisao-web-gules.vercel.app/hub/sso`, marcar **login único**, liberar para as pessoas e
+anotar o **número (id)** do sistema.
+
+**Variáveis** (ver `.env.local.example`): `NEXT_PUBLIC_HUB_URL`, `HUB_SSO_SECRET`, `HUB_PORTAL_ID`,
+`FIREBASE_SERVICE_ACCOUNT`. A chave `HUB_SSO_SECRET` é a que o Hub usa para assinar (variável `HUB_SSO_SECRET`
+do Hub ou o arquivo `sso.key`, que no servidor fica em `/home/suporte/docker/hub-data/sso.key`).
+Variáveis `NEXT_PUBLIC_*` valem a partir do próximo build/deploy.
+
+**Pontos de atenção**
+- A chave de assinatura é **a mesma de todos os sistemas do Hub** (Vouchers, Termos…). Quem a tem consegue
+  fabricar acesso a qualquer um deles; o `pid` só impede reaproveitar o token de um sistema em outro. Guarde-a
+  só como variável do Vercel e restrinja quem vê as variáveis. Uma assinatura assimétrica (o Hub já usa RS256
+  no OIDC) evitaria compartilhar o segredo.
+- O token vale 60 s, mas não é de uso único dentro desse prazo (igual aos portais atuais).
+- O **navegador** de quem usa precisa alcançar o Hub (para abrir o Hub e clicar). O servidor do app, não.
+- `FIREBASE_SERVICE_ACCOUNT` é chave de administrador: use uma chave **nova**, só para este servidor.
+- Liberar alguém no Hub **não** cria o cadastro no app. Pessoas novas ainda precisam do usuário no Firebase
+  Auth e do documento em `usuarios` (script `criar-usuarios.js`, fora do repositório).
+- Só desligue o provedor e-mail/senha no Firebase **depois** de confirmar o acesso pelo Hub em produção.
+- Configurações é só para admin/supervisora (não há mais troca de senha no app).

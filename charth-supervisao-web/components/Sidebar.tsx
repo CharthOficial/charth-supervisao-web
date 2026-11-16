@@ -6,7 +6,16 @@ import { auth } from "../lib/firebase";
 import { podeCriarAvaliacao } from "../lib/auth";
 import type { Usuario } from "../lib/types";
 
+const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL?.replace(/\/+$/, "");
+
 export default function Sidebar({ usuario }: { usuario: Usuario }) {
+  // Com o login pelo Hub, "Sair" precisa levar ao Hub: se ficasse no app, o
+  // Hub (ainda logado) reabriria a sessão na hora.
+  async function sair() {
+    await signOut(auth);
+    window.location.assign(HUB_URL ? `${HUB_URL}/hub.php` : "/entrar");
+  }
+
   return (
     <nav
       className="charth-sidebar"
@@ -28,7 +37,9 @@ export default function Sidebar({ usuario }: { usuario: Usuario }) {
       )}
       <Link href="/historico" className="nav-pill">Histórico</Link>
       <Link href="/planos-de-acao" className="nav-pill">Planos de ação</Link>
-      <Link href="/configuracoes" className="nav-pill">Configurações</Link>
+      {podeCriarAvaliacao(usuario.perfil) && (
+        <Link href="/configuracoes" className="nav-pill">Configurações</Link>
+      )}
 
       {/* Bonificação NÃO existe como página no app original (confirmado
           em app.py: as 5 páginas reais são Dashboard/Nova Avaliação/
@@ -41,7 +52,7 @@ export default function Sidebar({ usuario }: { usuario: Usuario }) {
         </Link>
       )}
 
-      <button onClick={() => signOut(auth)} className="nav-pill" style={{ marginTop: "auto", border: "none" }}>
+      <button onClick={sair} className="nav-pill" style={{ marginTop: "auto", border: "none" }}>
         Sair
       </button>
     </nav>
